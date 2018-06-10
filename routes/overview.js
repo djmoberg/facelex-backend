@@ -4,10 +4,10 @@ var router = express.Router();
 function connect() {
     var mysql      = require('mysql');
     var connection = mysql.createConnection({
-    host     : 'mysql44.unoeuro.com',
-    user     : 'facelex_com',
+    host     : process.env.DB_HOST,
+    user     : process.env.DB_USER,
     password : process.env.DB_PASS,
-    database : 'facelex_com_db'
+    database : process.env.DB_DATABASE
     });
 
     connection.connect();
