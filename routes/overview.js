@@ -1,21 +1,10 @@
 var express = require('express');
 var router = express.Router();
 
-function connect() {
-    var mysql      = require('mysql');
-    var connection = mysql.createConnection({
-    host     : process.env.DB_HOST,
-    user     : process.env.DB_USER,
-    password : process.env.DB_PASS,
-    database : process.env.DB_DATABASE
-    });
-
-    connection.connect();
-    return connection
-}
+var db = require('./db');
 
 router.get('/', function(req, res, next) {
-    var connection = connect()
+    var connection = db
     connection.query('SELECT work.id, users.name, work.workDate, work.workFrom, work.workTo, work.comment FROM work INNER JOIN users ON users.id = work.user', function(err, rows, fields) {
     if (!err) {
         res.header("Access-Control-Allow-Origin", "*");
