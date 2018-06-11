@@ -5,7 +5,7 @@ var db = require('./db');
 
 router.get('/', function(req, res, next) {
     var connection = db
-    connection.query('SELECT work.id, users.name, work.workDate, work.workFrom, work.workTo, work.comment FROM work INNER JOIN users ON users.id = work.user', function(err, rows, fields) {
+    connection.query('SELECT id, name FROM users', function(err, rows, fields) {
     if (!err) {
         res.header("Access-Control-Allow-Origin", "*");
         res.header("Access-Control-Allow-Headers", "X-Requested-With");
@@ -15,7 +15,7 @@ router.get('/', function(req, res, next) {
         console.log('Nice!');
     }
     else
-        console.log('Error while performing Query.');
+        console.log('Error while performing Query.' + err);
     });
 
     connection.end();
