@@ -18,7 +18,7 @@ router.get('/', function(req, res, next) {
         console.log('Error while performing Query.');
     });
 
-    connection.end();
+    // connection.end();
 });
 
 module.exports = router;
