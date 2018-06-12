@@ -4,8 +4,7 @@ var router = express.Router();
 var db = require('./db');
 
 router.get('/', function(req, res, next) {
-    var connection = db
-    connection.query('SELECT work.id, users.name, work.workDate, work.workFrom, work.workTo, work.comment FROM work INNER JOIN users ON users.id = work.user', function(err, rows, fields) {
+    db.query('SELECT work.id, users.name, work.workDate, work.workFrom, work.workTo, work.comment FROM work INNER JOIN users ON users.id = work.user', function(err, rows, fields) {
     if (!err) {
         res.header("Access-Control-Allow-Origin", "*");
         res.header("Access-Control-Allow-Headers", "X-Requested-With");
@@ -18,7 +17,7 @@ router.get('/', function(req, res, next) {
         console.log('Error while performing Query.');
     });
 
-    // connection.end();
+    // db.end();
 });
 
 module.exports = router;
