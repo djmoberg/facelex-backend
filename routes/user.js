@@ -27,6 +27,7 @@ router.post('/login', function (req, res, next) {
             if (rows.length !== 0) {
                 bcrypt.compare(req.body.password, rows[0].password, function (err, res2) {
                     if (res2) {
+                        req.session.name = req.body.name 
                         res.send("correct")
                     } else {
                         res.send("not correct")
@@ -39,6 +40,15 @@ router.post('/login', function (req, res, next) {
         else
             console.log(err);
     });
+});
+
+router.get('/loggedIn', function (req, res, next) {
+    console.log(req.session)
+    if (req.session.name) {
+        res.send("true")
+    } else {
+        res.send("false")
+    }
 });
 
 // router.post('/test', function (req, res, next) {
