@@ -3,14 +3,19 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var bodyParser = require('body-parser');
+var cors = require('cors')
 
 require('dotenv').config()
 
 var indexRouter = require('./routes/index');
 var overviewRouter = require('./routes/overview')
 var usersRouter = require('./routes/users')
+var userRouter = require('./routes/user')
 
 var app = express();
+
+app.use(cors())
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -25,6 +30,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/overview', overviewRouter)
 app.use('/users', usersRouter)
+app.use('/user', userRouter)
+
+app.use(bodyParser.json()); // support json encoded bodies
+app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
