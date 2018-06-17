@@ -3,6 +3,7 @@ var router = express.Router();
 
 var db = require('./db');
 const bcrypt = require('bcrypt');
+var auth = require('../routes/auth')
 
 router.post('/add', function (req, res, next) {
     bcrypt.hash(req.body.password, 10, function (err, hash) {
@@ -21,33 +22,20 @@ router.post('/add', function (req, res, next) {
     });
 });
 
-router.post('/login', function (req, res, next) {
-    db.query('SELECT * FROM users WHERE name = (?)', req.body.name, function (err, rows, fields) {
-        if (!err) {
-            if (rows.length !== 0) {
-                bcrypt.compare(req.body.password, rows[0].password, function (err, res2) {
-                    if (res2) {
-                        req.session.name = req.body.name 
-                        res.send("correct")
-                    } else {
-                        res.send("not correct")
-                    }
-                });
-            } else {
-                res.send("not correct")
-            }
-        }
-        else
-            console.log(err);
-    });
+router.post('/login', auth.authenticate('login'), function (req, res, next) {
+    res.send("Logged in")
+});
+
+router.get('/logout', function(req, res) {
+    req.logout();
+    res.send("Logged out")
 });
 
 router.get('/loggedIn', function (req, res, next) {
-    console.log(req.session)
-    if (req.session.name) {
-        res.send("true")
+    if (req.user) {
+        res.json({"loggedIn": true, "username": req.user.username})
     } else {
-        res.send("false")
+        res.json({"loggedIn": false})
     }
 });
 
