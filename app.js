@@ -18,7 +18,7 @@ var userRouter = require('./routes/user')
 var app = express();
 
 app.use(cors({
-  origin: "http://localhost:3001",
+  origin: process.env.CORS_ORIGIN,
   credentials: true
 }))
 // app.use(cookieParser());
